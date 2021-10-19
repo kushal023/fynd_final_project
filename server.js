@@ -8,6 +8,8 @@ const dotenv=require("dotenv")
 dotenv.config()
 
 const QuestionRoute=require("./HR/question.route")
+const UserRoute=require("./user/user.route")
+const CompilerRoute=require("./compiler/compiler.route")
 const { DB_URL, PORT } = require("./config");
 
 const server=express()
@@ -21,5 +23,7 @@ DB.init(DB_URL).then((db) => {
         console.log(`http://localhost:${PORT}`)
     })
     server.use("/hr",QuestionRoute)
+    server.use("/user", UserRoute)
+    server.use("/", CompilerRoute)
 });
  

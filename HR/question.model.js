@@ -5,4 +5,4 @@ var csvSchema=new mongoose.Schema({
     
 })
 
-module.exports=mongoose.model("employeerecords", csvSchema)
+module.exports=mongoose.model("problems", csvSchema)
