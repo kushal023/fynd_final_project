@@ -50,3 +50,4 @@ const result=async(req, res)=>{
 module.exports={
     code, result
 }
+
