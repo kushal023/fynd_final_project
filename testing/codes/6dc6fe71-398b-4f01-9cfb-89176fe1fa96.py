@@ -1,0 +1,1 @@
+prmnint("Hello buddy")

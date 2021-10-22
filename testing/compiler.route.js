@@ -1,10 +1,10 @@
 const express=require("express")
 const router=express.Router()
-const authenticate=require("../user/user.authenticate")
+const {allOutput, singleOutput, run}=require("./compiler.controller")
 
-const   {code, result}=require("./compiler.controller")
 
-router.post("/run",authenticate,code)
-router.get("/result", result)
+router.get("/allOutput",allOutput)
+router.get("/singleOutput",singleOutput)
+router.post("/run",run)
 
 module.exports=router

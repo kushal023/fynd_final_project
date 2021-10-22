@@ -106,7 +106,7 @@ const login = (req, res, next) => {
 
 
 
-const showProblem=(req,res, next)=>{
+const showProblem=async (req,res, next)=>{
  
    Problem.find({}, {question:1, _id:0,questionId:"$_id"}).limit(1).skip(Math.random()*10)
    .then(response=>{
