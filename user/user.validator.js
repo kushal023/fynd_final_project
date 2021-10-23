@@ -24,7 +24,7 @@ const userValidation = (req, res, next) => {
 	if (error) {
 		res.status(406);
 		return res.json(
-			`Error in User Data : ${error.message}`
+			`${error.message}`
 		);
 	} else {
 		next();

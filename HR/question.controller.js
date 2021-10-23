@@ -4,6 +4,7 @@ const uploadFile=(req, res, next)=>{
     var arrayToInsert = [];
     
     const file = req.files.file;
+    
 
     csvtojson().fromString(file.data.toString()).then(source => {
         // Fetching the all data from each row

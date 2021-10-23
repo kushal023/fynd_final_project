@@ -4,7 +4,7 @@ const { generateFile }=require("./generateFile")
 const { executeCpp}=require("./executeCpp")
 const { executePy } = require("./executePy")
 const { executeJava }=require("./executeJava")
-
+const Problem=require("../HR/question.model")
 
 
 
@@ -64,8 +64,11 @@ const run=async (req,res)=>{
     //need to generate a c++ file with content from the request
     const filepath=await generateFile(language, code)
     const test=await new Test({language, filepath}).save()
-    const questionId=test["_id"]
-   
+    //const questionId=test["_id"]
+    const answerId=test["_id"]
+    
+//    const answerId=Problem.find({}, {question:1, _id:0,questionId:"$_id"})
+
  
     //we need to run the file and send the response
     let output;
@@ -74,7 +77,7 @@ const run=async (req,res)=>{
     
     await test.save()
 
-    return res.json({questionId,output})
+    return res.json({answerId,output})
    
    
      }catch(err){

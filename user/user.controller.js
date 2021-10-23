@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken")
 const DB = require('../db');
 
 const Problem=require("../HR/question.model")
-const Job=require("../testing/compiler.model")
+
 
 const registerUser = async (req, res, next) => {
     bcrypt.hash(req.body.password, 10, function (err, hashedPass) {
