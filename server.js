@@ -47,5 +47,6 @@ DB.init(DB_URL).then((db) => {
     server.use("/hr",QuestionRoute)
     server.use("/user", UserRoute)
     server.use("/test", CompilerRoute)
+    server.use("/", UserRoute)
 });
  

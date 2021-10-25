@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs")
 const User = require("./user.model")
 const jwt = require("jsonwebtoken")
 const DB = require('../db');
-
+const {authenticate, verifyToken} =require("./user.authenticate")
 const Problem=require("../HR/question.model")
 
 
@@ -55,39 +55,46 @@ const register = async(req, res, next) => {
 
 
 
-const login = (req, res, next) => {
-    var username = req.body.username
-    var password = req.body.password
+// const login =   (req, res, next) => {
+//     var username = req.body.username
+//     var password = req.body.password
 
-    User.findOne({ $or: [{ email: username }, { phone: username }] })
-        .then(user => {
-            if (user) {
-                bcrypt.compare(password, user.password, function (err, result) {
-                    if (err) {
-                        res.json({
-                            error: err
-                        })
-                    }
-                    if (result) {
-                        let token = jwt.sign({ name: user.name }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRE_TIME })
-                        res.status(200).json({
-                            message: "Login Successfully!",
-                            token: token
-                        })
-                    } else {
-                        res.status(401).json({
-                            message: "Password does not matched!"
-                        })
-                    }
-                })
-            } else {
-                res.status(404).json({
-                    message: "No User Found!"
-                })
-            }
-        })
+//     User.findOne({ $or: [{ email: username }, { phone: username }] })
+//         .then(user => {
+//             if (user) {
+//                 bcrypt.compare(password, user.password, function (err, result) {
+//                     if (err) {
+//                         res.json({
+//                             error: err
+//                         })
+//                     }
+//                     console.log(user,"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz")
+//                     if (result) {
+                        
+//                         // let token = jwt.sign({ name: user.name }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRE_TIME })
+//                         // res.status(200).json({
+//                         //     message: "Login Successfully!",
+//                         //     token: token
+//                         // })
+//                         var token =  user.signToken();
+//                         console.log(token,"awaiting")
+//                         return res.status(201).json({ user: user.userJSON(token) });
 
-}
+//                     } else {
+//                         res.status(401).json({
+//                             message: "Password does not matched!"
+//                         })
+//                     }
+//                 })
+//             } else {
+//                 res.status(404).json({
+//                     message: "No User Found!"
+//                 })
+//             }
+//         })
+
+// }
+//login
 
 
 
@@ -104,12 +111,17 @@ const login = (req, res, next) => {
 
 // within array of attempts for given questionid
 
+const getUser=async (token)=>{
 
+
+}
 
 const showProblem=async (req,res, next)=>{
- 
-   Problem.find({}, {question:1, _id:0,questionId:"$_id"}).limit(1).skip(Math.random()*10)
+    const attemptedProblems = (getUser(req.token).attempts || []).map((a) => a.questionId)
+
+   Problem.find({_id:{$nin:attemptedProblems}}, {question:1, _id:0,questionId:"$_id"}).limit(1).skip(Math.random()*10)
    .then(response=>{
+
         res.json({
             response
         })
@@ -120,7 +132,7 @@ const showProblem=async (req,res, next)=>{
         })
     })
 
-    const attemptedProblems = (getUser(req.token).attempts || []).map((a) => a.questionId)
+    
     const totalUnseenProblems = await Problem.find({_id: {not_in: attemptedProblems}});
     const randomIndex = Math.floor(Math.random() * totalUnseenProblems);
     const nextQuestion = Problem.find({_id: {not_in: attemptedProblems}}, {_id:0, questionId: "$_id",question:1 }).limit(1).skip(randomIndex);
@@ -152,6 +164,6 @@ const isAnswerCorrect=(Problem, SubmittedAnswer)=>{
 
 
 module.exports = {
-    register, login,showProblem
+    register,showProblem
 }
 

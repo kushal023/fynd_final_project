@@ -5,8 +5,7 @@ const { executeCpp}=require("./executeCpp")
 const { executePy } = require("./executePy")
 const { executeJava }=require("./executeJava")
 const Problem=require("../HR/question.model")
-
-
+const User=require("../user/user.model")
 
 //show all output
 
@@ -54,30 +53,39 @@ const functionsByLang={
 
 
 const run=async (req,res)=>{
-   
+console.log(req.params, req.body, "req.params")
+
+   const {questionId} = req.params
     const {language="cpp",code}=req.body;
+   
     if(code===undefined){
         return res.status(400).json({success:false, error:"Empty code body"})
     }
     try{
   
     //need to generate a c++ file with content from the request
+ 
     const filepath=await generateFile(language, code)
     const test=await new Test({language, filepath}).save()
-    //const questionId=test["_id"]
+
+    const userId = req.user?.userId;
     const answerId=test["_id"]
     
-//    const answerId=Problem.find({}, {question:1, _id:0,questionId:"$_id"})
 
+    
  
     //we need to run the file and send the response
     let output;
     output=await functionsByLang[test.language](test.filepath);
     test["output"]=output;
-    
+    test["userId"]=userId;
+    test["questionId"]=questionId;
+
     await test.save()
 
-    return res.json({answerId,output})
+
+
+    return res.json({answerId,output,userId,questionId})
    
    
      }catch(err){

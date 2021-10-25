@@ -3,10 +3,13 @@ const db = require('../db').db;
 const uploadFile=(req, res, next)=>{
     var arrayToInsert = [];
     
-    const file = req.files.file;
-    
+    console.log({f: req.files })
+
+    const file = req.files.files;
+   
 
     csvtojson().fromString(file.data.toString()).then(source => {
+
         // Fetching the all data from each row
         const dbConnection = db.connection;
         for (var i = 0; i < source.length; i++) {
@@ -20,7 +23,9 @@ const uploadFile=(req, res, next)=>{
          var collectionName = 'problems';
          var collection = dbConnection.collection(collectionName);
          collection.insertMany(arrayToInsert, (err, result) => {
-             if (err) console.log(err);
+            console.log(arrayToInsert,"insertxxxxxxxxxxxxxxxx") 
+            if (err) console.log(err);
+
              if(result){
                  console.log("Import CSV into database successfully.");
              }
