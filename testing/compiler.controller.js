@@ -53,7 +53,6 @@ const functionsByLang={
 
 
 const run=async (req,res)=>{
-console.log(req.params, req.body, "req.params")
 
    const {questionId} = req.params
     const {language="cpp",code}=req.body;

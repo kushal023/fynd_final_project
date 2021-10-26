@@ -1,0 +1,32 @@
+{
+    "env": {
+        "commonjs": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": [
+        "prettier", 
+        "airbnb-base"
+    ],
+    "plugins": [
+        "prettier"
+      ],
+    "parserOptions": {
+        "ecmaVersion": 12
+    },
+    "rules": {
+        "prettier/prettier": "error",
+        "quotes": [2, "single", { "avoidEscape": true }],
+        "no-plusplus": "off"  
+    },
+      "eslint.enable": true,
+      "files.exclude": {
+        "node_modules": true,
+        ".npm-offline-cache": true
+      },
+      "editor.formatOnSave": true,
+      "[javascript]": {
+        "editor.formatOnSave": true
+      }
+
+}

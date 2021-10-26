@@ -24,7 +24,7 @@ const verifyToken= (req, res, next) => {
       if (token) {
         let payload = jwt.verify(token,  process.env.ACCESS_TOKEN_SECRET);
         req.user = payload;
-        console.log(payload,"payload bahiy")
+        
         return next();
       } else {
         return res.status(401).json({ error: { body: ['Token Required'] } });
