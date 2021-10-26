@@ -111,46 +111,25 @@ const showProblem = async (req, res, next) => {
 };
 //Show all response of user
 const userResponse = async (req, res, next) => {
-  console.log(req, 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
   const userId = req.body.userId;
 
-  Test.findById(userId, { _id: 0, output: '$output' })
-    .then((response) => {
-      res.json({
-        response,
-      });
-    })
-    .catch((error) => {
-      res.status(404).json({
-        message: `User with id: ${req.body.userId} not found`,
-      });
-    });
+  Test.find(
+    { userId: userId },
+    { question: 1, _id: 0, questionId: '$_id' }
+  ).exec((err, res) => {
+    if (err) return console.error(err);
+    else res.json(res);
+  });
 };
 
-//{_id:{$nin:attemptedProblems}
-
-// const totalUnseenProblems = await Problem.find({_id: {not_in: attemptedProblems}});
-// const randomIndex = Math.floor(Math.random() * totalUnseenProblems);
-// const nextQuestion = Problem.find({_id: {not_in: attemptedProblems}}, {_id:0, questionId: "$_id",question:1 }).limit(1).skip(randomIndex);
-// user.attempts.push({questionId: nextQuestion._id});
-
-// const handleResponse = (req) => {
-
-//     const user = getUser(req.token);
-//     //Check if user has attempted this questionId
-//     const isSeen = user.attempts.find({questionId: req.questionId});
-//     if (!isSeen) {
-//         return error
-//     }
-//     User.update({_id: user._id}, {$set: {}})
-// }
-
-// const isAnswerCorrect=(Problem, SubmittedAnswer)=>{
-
-//     var problem = Problem.findOne({_id: SubmittedAnswer.questionId}, {_id:0,question:0,level:0})
-//     const output = getAnswer(SubmittedAnswer);
-//     return problem.answer === output;
-// }
+// .exec((err, company) => {
+//   if (err) {
+//     return res.status(500).json(err);
+//   } else if (!company) {
+//     return res.status(404).json();  // Only this runs.
+//   }
+//   return res.status(200).json(company);
+// });
 
 module.exports = {
   register,
