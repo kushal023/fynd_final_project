@@ -74,7 +74,7 @@ const login = (req, res, next) => {
 
           if (result) {
             var token = await user.signToken();
-            console.log(token, 'awaiting');
+
             return res.status(201).json({ user: user.userJSON(token) });
           } else {
             res.status(401).json({
@@ -92,12 +92,19 @@ const login = (req, res, next) => {
 };
 
 //Show Problem
-const showProblem = async (req, res, next) => {
-  //const attemptedProblems = (getUser(req.token).attempts || []).map((a) => a.questionId)
+function randomIntFromInterval(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
 
-  Problem.find({}, { question: 1, _id: 0, questionId: '$_id' })
+const showProblem = async (req, res, next) => {
+  const questionCount = await Problem.count();
+
+  Problem.find(
+    {},
+    { question: 1, _id: 0, questionId: '$_id', output: '$output' }
+  )
     .limit(1)
-    .skip(Math.random() * 10)
+    .skip(randomIntFromInterval(0, questionCount))
     .then((response) => {
       res.json({
         response,
@@ -115,21 +122,11 @@ const userResponse = async (req, res, next) => {
 
   Test.find(
     { userId: userId },
-    { question: 1, _id: 0, questionId: '$_id' }
-  ).exec((err, res) => {
-    if (err) return console.error(err);
-    else res.json(res);
+    { question: 1, _id: 0, questionId: '$questionId', output: '$output' }
+  ).exec((err, result) => {
+    res.status(200).json(result);
   });
 };
-
-// .exec((err, company) => {
-//   if (err) {
-//     return res.status(500).json(err);
-//   } else if (!company) {
-//     return res.status(404).json();  // Only this runs.
-//   }
-//   return res.status(200).json(company);
-// });
 
 module.exports = {
   register,

@@ -18,7 +18,7 @@ const uploadFile = (req, res, next) => {
           level: source[i].level,
         };
         arrayToInsert.push(oneRow);
-      } // inserting into the table "employees"
+      }
       const collectionName = 'problems';
       const collection = dbConnection.collection(collectionName);
       collection.insertMany(arrayToInsert, (err, result) => {
