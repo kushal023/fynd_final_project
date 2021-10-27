@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken');
 const User = require('./user/user.model');
 
 const dotenv = require('dotenv');
-
 dotenv.config();
 
 const QuestionRoute = require('./HR/question.route');

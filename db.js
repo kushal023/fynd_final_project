@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const db = {};
 const init = async (dbConnectionStr) => {
   const connection = mongoose.connection;
@@ -22,7 +23,7 @@ const init = async (dbConnectionStr) => {
         // db = client.db();
       })
       .catch((err) => {
-        reject(error);
+        reject(err);
         console.log(`DB Connection Error: ${err.message}`);
       });
   });
