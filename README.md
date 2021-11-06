@@ -1,7 +1,7 @@
 # fynd_final_project
 
 Online testing facility and recruitment workflow where users  can solve 
-problems in 4 languages; C++, Java and Python. Initially 
+problems in 3 languages; C++, Java and Python. Initially 
 users will sign in/ sign up using their email id. After that they will 
 give test.  if their solution matches our test case then will show 
 success otherwise show the wrong answer.here, difficulty of problems 
